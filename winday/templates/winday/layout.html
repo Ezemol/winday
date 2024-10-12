@@ -8,6 +8,7 @@
         <title>{% block title %}Winday{% endblock %}</title>
         <link rel="stylesheet" href="{% static 'styles.css' %}">
         <link rel="stylesheet" href="{% static 'index.js' %}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Lupa simbolo -->>
     </head>
     <body>  
         <nav class="upper-bar">
@@ -15,21 +16,22 @@
                 <li class="link">
                     <a href="#">Winday</a>
                 </li>
-                <li class="link">
-                    <a href="#">Find Your Location</a>
+                <li>
+                    <div class="search-container">
+                        <input type="text" class="search-input" placeholder="Buscar...">
+                        <div class="search-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>                    
                 </li>
-                {% if request.user.is_authenticated %}
-                    <li class="link">
-                        <a href="{% url 'mundoalado:logout' %}">Logout</a>
-                    </li>
-                {% else %}
-                    <li class="link">
-                        <a href="{% url 'mundoalado:login' %}">Login</a>
-                    </li>
-                    <li class="link">
-                        <a href="{% url 'mundoalado:register' %}">Register</a>
-                    </li>
-                {% endif %}
+                <li class="log-div link"> <!-- Cambié aquí a log-div -->
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'winday:logout' %}">Logout</a>
+                    {% else %}
+                        <a href="{% url 'winday:login' %}">Login</a>
+                        <a href="{% url 'winday:register' %}">Register</a>
+                    {% endif %}
+                </li>
             </ul>
         </nav>
 

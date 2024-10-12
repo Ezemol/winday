@@ -119,7 +119,8 @@ USE_TZ = True
 
 import os
 
-STATIC_URL = 'static/'
+# Asegúrate de que estas líneas estén presentes
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # Default primary key field type

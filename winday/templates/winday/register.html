@@ -1,5 +1,5 @@
-{% load static %}
 {% extends "winday/layout.html" %}
+{% load static %}
 
 {% block body %}
 
@@ -9,7 +9,7 @@
         <div>{{ message }}</div>
     {% endif %}
 
-    <form action="{% url 'winday:register' %}" method="post">
+    <form action="{% url 'winday:register' %}" method="post" class="log-form">
         {% csrf_token %}
         
         <div class="form-group">
@@ -26,7 +26,10 @@
         </div>
         <input class="submit-button" type="submit" value="Register">
     </form>
-    <p></p>
-    Already have an account? <a class="submit-button" href="{% url 'winday:login' %}">Log In</a>
+    
+    <p class="register-link"> <!-- Añade una clase para el estilo -->
+        Ya tienes una cuenta?
+        <a class="link" href="{% url 'winday:login' %}">Entra aqui.</a>
+    </p>
 
 {% endblock %}

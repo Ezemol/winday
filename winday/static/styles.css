@@ -1,3 +1,10 @@
+:root{
+    --azul-oscuro:#18181B;
+    --blanco: #fff;
+    --azul-claro: #1d4ed8;
+
+}
+
 *{
     padding: 0;
     margin: 0;
@@ -10,10 +17,16 @@ a{
     text-decoration: none;
 }
 
-body{
+body {
     font-family: 'Poppins', sans-serif;
-    background-color: #18181B;
+    background-image: url('/static/images/windsurf-background.jpg');
+    background-size: cover; /* Asegura que la imagen cubra toda la página */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    height: 100vh; /* Asegura que el body tenga altura completa */
+    margin: 0; /* Elimina el margen por defecto */
 }
+
 
 .nav{
     max-width: 1200px;
@@ -25,18 +38,19 @@ body{
     gap: 2rem;
 }
 
-.nav-links{
+.nav-links {
     list-style: none;
     display: flex;
     align-items: center;
     gap: 3rem;
     padding-top: 0.75rem;
+    background-color: rgba(24, 24, 27, 0.8); /* Color con opacidad */
 }
 
 .link a{
     position: relative;
     padding-bottom: 0.75rem;
-    color: #fff;
+    color: var(--blanco);
 }
 
 .link a::after{
@@ -46,12 +60,21 @@ body{
     width: 0;
     bottom: 0;
     left: 0;
-    background-color: #1d4ed8;
+    background-color: var(--azul-claro);
     transition: all 0.3s ease;
 }
 
 .link a:hover::after{
     width: 70%;
+}
+
+.log-div {
+    display: flex; /* Permite alinear los elementos en línea */
+    justify-content: flex-end; /* Alinea los enlaces a la derecha */
+    padding-right: 1rem;
+    gap: 3rem; /* Espacio entre los elementos */
+    width: 100%; /* Ocupa el ancho completo */
+    position: relative; /* Mantiene el contexto de posicionamiento si es necesario */
 }
 
 .logo-container {
@@ -65,4 +88,84 @@ body{
     height: 50px;
     border-radius: 50%;  /* Hace la imagen circular */
     object-fit: cover;  /* Asegura que la imagen se recorte correctamente */
+}
+
+/* Contenedor principal */
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Campo de texto del buscador (inicialmente oculto) */
+.search-input {
+    width: 0;
+    height: 30px;
+    padding: 0;
+    font-size: 14px;
+    border: none;
+    background-color: var(--azul-oscuro);
+    color: var(--blanco);
+    outline: none;
+    transition: width 0.4s ease;
+    border-bottom: 2px solid var(--azul-claro);
+    opacity: 0;
+    pointer-events: none; /* Evita que se pueda escribir hasta que esté visible */
+}
+
+/* Icono de la lupa */
+.search-icon {
+    cursor: pointer;
+    font-size: 20px;
+    color: var(--blanco);
+    background-color: var(--azul-oscuro);
+    padding: 8px;
+    border-radius: 50%;
+}
+
+/* Estilo al hacer hover en el contenedor o cuando el input tiene foco */
+.search-container:hover .search-input,
+.search-input:focus {
+    width: 100px; /* Expande el input */
+    padding: 5px;
+    opacity: 1;
+    pointer-events: auto; /* Permite escribir cuando esté visible */
+}
+
+/* Cambiar el estilo del icono al estar visible el input */
+.search-container:hover .search-icon,
+.search-input:focus + .search-icon {
+    background-color: transparent;
+}
+
+.principal-title{
+    font-size: 36px;
+    color: var(--blanco);
+}
+
+.register-link {
+    margin-top: 1rem; /* Espacio superior para separar del formulario */
+    color: var(--blanco);
+}
+
+.register-link .link {
+    color: var(--azul-claro); /* Color del enlace */
+    text-decoration: none; /* Sin subrayado */
+    padding: 0.5rem; /* Espacio alrededor del enlace */
+    position: relative; /* Necesario para el efecto del pseudo-elemento */
+}
+
+.register-link .link::after {
+    content: "";
+    position: absolute;
+    height: 2px;
+    width: 0;
+    bottom: 0;
+    left: 0.5rem;
+    background-color: var(--blanco);
+    transition: all 0.3s ease;
+}
+
+.register-link .link:hover::after {
+    width: 70%; /* Efecto de expansión en hover */
 }

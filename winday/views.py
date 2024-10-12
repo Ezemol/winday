@@ -3,11 +3,12 @@ from django.views.decorators.csrf import csrf_exempt  # Decorador para permitir 
 from django.contrib.auth import authenticate, login, logout  # Funciones para autenticar y manejar sesiones de usuario
 from django.db import IntegrityError  # Manejo de errores de integridad en la base de datos
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse  # Respuestas HTTP
-from django.shortcuts import render, get_object_or_404  # Funciones para renderizar vistas y obtener objetos
+from django.shortcuts import render, redirect, get_object_or_404  # Funciones para renderizar vistas y obtener objetos
 from django.urls import reverse  # Función para generar URLs
 import json  # Módulo para manejar JSON
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage # Crear páginas en el front
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import ValidationError
 
 from .models import User
@@ -15,7 +16,6 @@ from .models import User
 """ Main page """
 def index(request):
     return render(request, "winday/index.html")
-
 
 def login_view(request):
     if request.method == "POST":
@@ -26,14 +26,15 @@ def login_view(request):
 
         # Verificar si la autenticación fue exitosa
         if user is not None:
-            login(request, user)
-            return render(request, "winday/index.html")  # Redirigir al índice
+            login(request, user)  # Aquí se pasa el usuario autenticado correctamente
+            return redirect('index')  # Redirigir al índice
         else:
             return render(request, "winday/login.html", {
                 "message": "Nombre de usuario y/o contraseña inválidas."  # Mensaje de error
             })
     else:
         return render(request, "winday/login.html")  # Renderizar la vista de inicio de sesión
+
 
 
 @login_required
