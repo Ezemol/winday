@@ -11,7 +11,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import ValidationError
 
-from .models import User
+from .models import User, Profile
 
 """ Main page """
 def index(request):
@@ -84,3 +84,56 @@ def register(request):
         return HttpResponseRedirect(reverse('winday:index'))  # Redirigir al índice
     else:
         return render(request, "winday/register.html")  # Renderizar la vista de registro
+    
+
+def profile(request, username):
+    # Obtener el usuario en la base de datos
+    user = get_object_or_404(User, username=username)
+    # Buscar el perfil del usuario
+    profile, created = Profile.objects.get_or_create(user=user)
+
+    # Inicializar variables
+    is_following = False
+    is_profile = False
+    num_followers = profile.followers.count()  # Contar seguidores
+    num_following = user.following.count()  # Contar seguidos
+
+    # Si es el perfil del usuario, no mostrar la opción de seguir
+    if request.user == user:
+        is_profile = True 
+
+    # Verificar si el usuario está siguiendo al dueño del perfil
+    if request.user.is_authenticated and not is_profile:
+        is_following = request.user in profile.followers.all()
+        
+    return render(request, "winday/profile.html", {
+            "profile_user": user,
+            "profile": profile,
+            "is_following": is_following,
+            "num_followers": num_followers,
+            "num_following": num_following,
+            "is_profile": is_profile,
+        })
+
+# Página de los perfiles que sigue el user
+def profile_connections(request, profile_id):
+
+     # Obtener el usuario cuyo perfil se está consultando
+    user = get_object_or_404(User, pk=profile_id)
+
+    # Determinar si se va a mostrar la lista de seguidores o seguidos
+    view_type = request.GET.get('view', 'followers')  # Valor por defecto: 'followers'
+
+    if view_type == 'following': 
+        profiles = user.following.all()
+        title = 'Following'
+    else:
+        profiles = user.profile.followers.all()
+        title = 'Followers'
+
+    return render(request, 'winday/profile_connections.html', {
+        "username": user,
+        "profiles": profiles,
+        "title": title,
+        "view_type": view_type,
+    })

@@ -14,7 +14,10 @@
         <nav class="upper-bar">
             <ul class="nav-links">
                 <li class="link">
-                    <a href="#">Winday</a>
+                    <a href="{% url 'winday:profile' user.username %}" class="user">{{ request.user }}</a>
+                </li>
+                <li class="link">
+                    <a href="{% url 'winday:index' %}">Winday</a>
                 </li>
                 <li>
                     <div class="search-container">

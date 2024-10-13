@@ -1,0 +1,30 @@
+{% extends 'winday/layout.html' %}  
+{% load static %}
+
+{% block body %}
+    <div class="login-container">
+        <h1 class="principal-title">{{ title }} of {{ username }}</h1>
+     
+        <ul class="profile-list">
+            {% for user in profiles %}
+                <li class="profile-item">
+                    {% if view_type == 'following' %}
+                        <a href="{% url 'winday:profile' user.user %}" class="link">{{ user.user }}</a>
+                    {% else %}
+                        <a href="{% url 'winday:profile' user %}" class="link">{{ user }}</a>
+                    {% endif %}
+                </li>
+            {% empty %}
+                <!-- Si la lista está vacía, mostrar un mensaje -->
+                <li class="empty-list profile-item">
+                    {% if view_type == 'following' %}
+                        No following
+                    {% else %}
+                        No followers
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>   
+
+{% endblock %}

@@ -2,6 +2,7 @@
     --azul-oscuro:#18181B;
     --blanco: #fff;
     --azul-claro: #1d4ed8;
+    --gris: #A9A9A9; 
 }
 
 *{
@@ -202,6 +203,7 @@ body {
     position: relative;
     color: var(--azul-claro); /* Color principal */
     padding-bottom: 0.75rem; /* Asegura espacio para la línea */
+    padding: 0.75rem;
 }
 
 .register-link .link::after {
@@ -210,7 +212,7 @@ body {
     height: 2px;
     width: 0;
     bottom: 0;
-    left: 0;
+    left: 0.75rem;
     background-color: var(--blanco); /* Color de la línea */
     transition: width 0.3s ease; /* Animación de la línea */
 }
@@ -227,4 +229,30 @@ body {
     font-size: 0.875rem;
     width: 100%;
     position: bottom;
+}
+
+.user{
+    color: var(--blanco);
+    text-transform: uppercase;
+}
+
+/* Estilo para la lista de perfiles */
+.profile-list {
+    list-style-type: none; /* Eliminar puntos de lista */
+    padding: 0; /* Eliminar padding */
+    margin: 20px 0; /* Espaciado vertical */
+}
+
+.profile-item {
+    margin-bottom: 10px; /* Espaciado entre elementos de la lista */
+}
+
+.register-link .profile-link{
+    color: var(--gris);
+}
+
+.empty-list {
+    text-align: center; /* Centrar texto */
+    color: var(--gris); /* Color del texto */
+    font-style: italic; /* Estilo de texto en cursiva */
 }

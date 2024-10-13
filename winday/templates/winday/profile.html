@@ -1,0 +1,22 @@
+{% extends 'winday/layout.html' %}  
+{% load static %}
+
+{% block body %}
+    <div class="login-container">
+        <div id="profile-view" data-is-following="{{ is_following|yesno:'true,false' }}" data-user-id="{{ profile.user.id }}">
+            <h1 class="principal-title">{{ profile.user }}</h1>
+    
+            <div class="follow-buttons"> <!-- Nuevo contenedor para alinear los botones -->
+                <p class="register-link">
+                    <a href="{% url 'winday:profile_connections' profile.user.id %}?view=followers" class="profile-link link">
+                        Followers: <span id="num_followers">{{ num_followers }}</span>
+                    </a>
+                    
+                    <a href="{% url 'winday:profile_connections' profile.user.id %}?view=following" class="profile-link link">
+                        Following: {{ num_following }}
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
