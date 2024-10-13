@@ -27,14 +27,13 @@ def login_view(request):
         # Verificar si la autenticación fue exitosa
         if user is not None:
             login(request, user)  # Aquí se pasa el usuario autenticado correctamente
-            return redirect('index')  # Redirigir al índice
+            return HttpResponseRedirect(reverse('winday:index'))  # Redirigir al índice
         else:
             return render(request, "winday/login.html", {
                 "message": "Nombre de usuario y/o contraseña inválidas."  # Mensaje de error
             })
     else:
         return render(request, "winday/login.html")  # Renderizar la vista de inicio de sesión
-
 
 
 @login_required
@@ -82,6 +81,6 @@ def register(request):
                 "message": "Nombre de usuario ya tomado."  # Mensaje de error
             })
         login(request, user)  # Iniciar sesión con el nuevo usuario
-        return render(request, "winday/index.html")  # Redirigir al índice
+        return HttpResponseRedirect(reverse('winday:index'))  # Redirigir al índice
     else:
         return render(request, "winday/register.html")  # Renderizar la vista de registro

@@ -2,7 +2,6 @@
     --azul-oscuro:#18181B;
     --blanco: #fff;
     --azul-claro: #1d4ed8;
-
 }
 
 *{
@@ -20,11 +19,18 @@ a{
 body {
     font-family: 'Poppins', sans-serif;
     background-image: url('/static/images/windsurf-background.jpg');
-    background-size: cover; /* Asegura que la imagen cubra toda la página */
-    background-position: center; /* Centra la imagen */
-    background-repeat: no-repeat; /* Evita que la imagen se repita */
-    height: 100vh; /* Asegura que el body tenga altura completa */
-    margin: 0; /* Elimina el margen por defecto */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh; /* Asegura que el body tenga al menos el tamaño completo de la pantalla */
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+/* Hace que el contenido de la página se expanda antes del footer */
+.container {
+    flex: 1;
 }
 
 
@@ -43,13 +49,15 @@ body {
     display: flex;
     align-items: center;
     gap: 3rem;
-    padding-top: 0.75rem;
+    padding: 1rem 0.75rem; /* Aumenta el padding para darle más espacio */
     background-color: rgba(24, 24, 27, 0.8); /* Color con opacidad */
+    min-height: 80px; /* Establece una altura mínima */
 }
 
 .link a{
     position: relative;
     padding-bottom: 0.75rem;
+    padding-left: 1rem;
     color: var(--blanco);
 }
 
@@ -59,7 +67,7 @@ body {
     height: 2px;
     width: 0;
     bottom: 0;
-    left: 0;
+    left: 1rem;
     background-color: var(--azul-claro);
     transition: all 0.3s ease;
 }
@@ -126,7 +134,7 @@ body {
 /* Estilo al hacer hover en el contenedor o cuando el input tiene foco */
 .search-container:hover .search-input,
 .search-input:focus {
-    width: 100px; /* Expande el input */
+    width: 150px; /* Expande el input */
     padding: 5px;
     opacity: 1;
     pointer-events: auto; /* Permite escribir cuando esté visible */
@@ -138,21 +146,62 @@ body {
     background-color: transparent;
 }
 
-.principal-title{
-    font-size: 36px;
+.login-container {
+    background-color: rgba(24, 24, 27, 0.8); /* Fondo semiopaco, manteniendo el diseño */
+    padding: 2rem; /* Espaciado para el formulario */
+    max-width: 500px; /* Ancho máximo del formulario */
+    margin: 2rem auto; /* Centrar horizontalmente */
+    border-radius: 10px; /* Bordes redondeados */
+    color: var(--blanco); /* Texto en blanco */
+}
+
+.principal-title {
+    font-size: 2rem;
     color: var(--blanco);
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem; /* Espacio entre los inputs */
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    background-color: var(--blanco); /* Misma paleta de colores */
+    border: 2px solid var(--azul-claro); /* Borde claro */
+    border-radius: 5px; /* Bordes redondeados */
+    color: var(--azul-oscuro);
+}
+
+.submit-button {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1.2rem;
+    background-color: var(--azul-claro);
+    color: var(--blanco);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: var(--blanco);
+    color: var(--azul-oscuro);
 }
 
 .register-link {
-    margin-top: 1rem; /* Espacio superior para separar del formulario */
+    text-align: center;
+    margin-top: 1.5rem;
     color: var(--blanco);
 }
 
 .register-link .link {
-    color: var(--azul-claro); /* Color del enlace */
-    text-decoration: none; /* Sin subrayado */
-    padding: 0.5rem; /* Espacio alrededor del enlace */
-    position: relative; /* Necesario para el efecto del pseudo-elemento */
+    position: relative;
+    color: var(--azul-claro); /* Color principal */
+    padding-bottom: 0.75rem; /* Asegura espacio para la línea */
 }
 
 .register-link .link::after {
@@ -161,11 +210,21 @@ body {
     height: 2px;
     width: 0;
     bottom: 0;
-    left: 0.5rem;
-    background-color: var(--blanco);
-    transition: all 0.3s ease;
+    left: 0;
+    background-color: var(--blanco); /* Color de la línea */
+    transition: width 0.3s ease; /* Animación de la línea */
 }
 
 .register-link .link:hover::after {
-    width: 70%; /* Efecto de expansión en hover */
+    width: 70%; /* Expande la línea en hover */
+}
+
+.copyright {
+    background-color: rgba(24, 24, 27, 0.9);
+    color: var(--blanco);
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.875rem;
+    width: 100%;
+    position: bottom;
 }
