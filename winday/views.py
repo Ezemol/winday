@@ -137,3 +137,31 @@ def profile_connections(request, profile_id):
         "title": title,
         "view_type": view_type,
     })
+
+@csrf_exempt
+@login_required
+def follow_user(request, profile_id):
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            try:
+                user_to_follow = get_object_or_404(User, pk=profile_id) # Obtiene el usuario a seguir
+
+                profile = user_to_follow.profile # Obtiene el perfil del usuario
+
+                # If el usuario ya está siguiendo dejar de seguir. Else empezar a seguir
+                if request.user in profile.followers.all():
+                    profile.followers.remove(request.user)  # Dejar de seguir
+                    is_following = False
+                else:
+                    profile.followers.add(request.user) # Seguir
+                    is_following = True
+
+                return JsonResponse({
+                    "message": "success",
+                    "is_following": is_following, # Devuelve el estado de seguimiento
+                })
+            except User.DoesNotExist:
+                return JsonResponse({"error":"User no encontrado."}, status=404)  # Manejar usuario no encontrado
+        else:
+            return JsonResponse({"error":  "El usuario no está autenticado."}, status=403)  # Manejar usuario no autenticado
+    return JsonResponse({"error": "Post request requerida."}, status=400) # Manejar método incorrecto

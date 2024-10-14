@@ -17,6 +17,13 @@
                     </a>
                 </p>
             </div>
+            {% if is_profile != True and request.user.is_authenticated %}
+                <div id="follow-div" class="follow-div"></div> 
+            {% endif %}
         </div>
     </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'winday/profile.js' %}"></script>
 {% endblock %}

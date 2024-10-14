@@ -19,7 +19,7 @@ a{
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-image: url('/static/images/windsurf-background.jpg');
+    background-image: url('/static/winday/images/windsurf-background.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -255,4 +255,26 @@ body {
     text-align: center; /* Centrar texto */
     color: var(--gris); /* Color del texto */
     font-style: italic; /* Estilo de texto en cursiva */
+}
+
+.follow-button {
+    padding: 0.5rem 1rem;  /* Tamaño más pequeño */
+    font-size: 0.875rem;  /* Fuente más pequeña */
+    background-color: var(--azul-claro);
+    color: var(--blanco);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.follow-button:hover {
+    background-color: var(--blanco);
+    color: var(--azul-oscuro);
+    border: 2px solid var(--azul-claro);
+}
+
+.follow-div{
+    text-align: center;
+    padding-top: 2rem;
 }
