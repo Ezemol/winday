@@ -201,7 +201,7 @@ body {
 
 .register-link .link {
     position: relative;
-    color: var(--azul-claro); /* Color principal */
+    color: var(--gris); /* Color principal */
     padding-bottom: 0.75rem; /* Asegura espacio para la línea */
     padding: 0.75rem;
 }
@@ -243,10 +243,6 @@ body {
     margin: 20px 0; /* Espaciado vertical */
 }
 
-.profile-item {
-    margin-bottom: 10px; /* Espaciado entre elementos de la lista */
-}
-
 .register-link .profile-link{
     color: var(--gris);
 }
@@ -278,3 +274,4 @@ body {
     text-align: center;
     padding-top: 2rem;
 }
+

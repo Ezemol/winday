@@ -1,8 +1,9 @@
+import requests
 from django.contrib.auth.decorators import login_required  # Decorador para requerir inicio de sesión
 from django.views.decorators.csrf import csrf_exempt  # Decorador para permitir solicitudes POST sin CSRF
 from django.contrib.auth import authenticate, login, logout  # Funciones para autenticar y manejar sesiones de usuario
 from django.db import IntegrityError  # Manejo de errores de integridad en la base de datos
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse  # Respuestas HTTP
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, Http404  # Respuestas HTTP
 from django.shortcuts import render, redirect, get_object_or_404  # Funciones para renderizar vistas y obtener objetos
 from django.urls import reverse  # Función para generar URLs
 import json  # Módulo para manejar JSON
@@ -10,6 +11,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage # Crear
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import ValidationError
+from django.core.cache import cache
 
 from .models import User, Profile
 
@@ -87,8 +89,15 @@ def register(request):
     
 
 def profile(request, username):
-    # Obtener el usuario en la base de datos
-    user = get_object_or_404(User, username=username)
+    # Intentar obtener el usuario en la base de datos
+    try:
+        user = get_object_or_404(User, username=username)
+    # If user was not found mensaje de error.
+    except Http404:
+        return render(request, "winday/profile.html", {
+            "message": "El usuario no fue encontrado"
+        })
+    
     # Buscar el perfil del usuario
     profile, created = Profile.objects.get_or_create(user=user)
 
@@ -161,7 +170,35 @@ def follow_user(request, profile_id):
                     "is_following": is_following, # Devuelve el estado de seguimiento
                 })
             except User.DoesNotExist:
-                return JsonResponse({"error":"User no encontrado."}, status=404)  # Manejar usuario no encontrado
+                return JsonResponse({"error":"Usuario no encontrado."}, status=404)  # Manejar usuario no encontrado
         else:
             return JsonResponse({"error":  "El usuario no está autenticado."}, status=403)  # Manejar usuario no autenticado
     return JsonResponse({"error": "Post request requerida."}, status=400) # Manejar método incorrecto
+
+def find_wind(request, location):
+    cache_key = f'wind_data_{location}'
+    cached_data = cache.get(cache_key)
+    
+    if cached_data:
+        context = cached_data
+    else:
+        # Lógica para hacer la solicitud a la API
+        api_key = 'fbe62aefbaa8f42f0dd5f00177975542'
+        base_url = "http://api.openweathermap.org/data/2.5/weather"
+        params = {'q': location, 'appid': api_key, 'units': 'metric'}
+        
+        try:
+            response = requests.get(base_url, params=params)
+            data = response.json()
+            if response.status_code == 200:
+                wind_speed = data['wind']['speed']
+                wind_direction = data['wind']['deg']
+                context = {'location': location, 'wind_speed': wind_speed, 'wind_direction': wind_direction}
+                # Almacenar en caché por 10 minutos
+                cache.set(cache_key, context, timeout=600)
+            else:
+                context = {'error': 'No se pudo obtener la información del viento.'}
+        except Exception:
+            context = {'error': 'Ocurrió un error al intentar obtener los datos.'}
+
+    return render(request, 'winday/wind_data.html', context)

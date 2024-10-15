@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos del Viento</title>
+</head>
+<body>
+    <h1>Condiciones del viento en {{ location }}</h1>
+
+    {% if wind_speed %}
+        <ul>
+            <li>Velocidad del viento: {{ wind_speed }} m/s</li>
+            <li>Dirección del viento: {{ wind_direction }}°</li>
+        </ul>
+    {% elif error %}
+        <p>{{ error }}</p>
+    {% else %}
+        <p>No hay datos disponibles en este momento.</p>
+    {% endif %}
+</body>
+</html>

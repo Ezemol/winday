@@ -13,12 +13,12 @@ document.addEventListener('DOMContentLoaded', () => {
             // Agrego boton de follow/unfollow
             followDiv.innerHTML = `
             <button id="button-follow" class="follow-button">
-                ${isFollowing ? "Unfollow" : "Follow"}  
+                ${isFollowing ? "Dejar de seguir" : "Seguir"}  
             </button>`; // Cambia el texto del botón según el estado
 
             // Añadir event listener al botón de follow/unfollow
             document.querySelector('#button-follow').addEventListener('click', () => {
-                const action = isFollowing ? "unfollow" : "follow";  // Define la acción a realizar
+                const action = isFollowing ? "Dejar de seguir" : "Seguir";  // Define la acción a realizar
                 console.log(action);  // Muestra la acción en la consola
 
                 follow(profileId, isFollowing);  // Llama a la función follow
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Actualiza el botón basado en la respuesta
             if (result.is_following !== undefined) {  // Verifica si el campo is_following está en la respuesta
                 isFollowing = result.is_following;  // Actualiza la variable isFollowing
-                document.querySelector('#button-follow').innerText =  isFollowing ? "Unfollow" : "Follow";  // Cambia el texto del botón
+                document.querySelector('#button-follow').innerText =  isFollowing ? "Dejar de seguir" : "Seguir";  // Cambia el texto del botón
 
                 // Actualizar los followers del perfil sin recargar la página
                 const numFollowersElement = document.querySelector("#num_followers");
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => {
             console.error('Error:', error);  // Muestra el error en la consola
-            alert('An error occurred while trying to follow/unfollow the user.');  // Muestra un mensaje de error al usuario
+            alert('Hubo un error intentando seguir o dejar de seguir al usuario.');  // Muestra un mensaje de error al usuario
         });
     }
 

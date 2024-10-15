@@ -22,7 +22,6 @@ save_calendary: Es la función que se encarga de guardar las fechas o eventos qu
 new_comment: Es la función que se encarga de guardar un comentario hecho por un user. Usa un modelo Comment
 location_review: Es la función que se encarga de guardar la reseña hecha por un usuario. Usa un modelo Location
 find_wind: Es la función que se encarga de encontrar el viento en la localidad marcada por el user.
-following_page: Muestra lista con los followers o followings de un user.
 sell_page: Renderiza página de ventas.
 
 Necesito usar rutas API's para conseguir los datos del viento y de las localizaciones.

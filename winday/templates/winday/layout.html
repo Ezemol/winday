@@ -14,9 +14,11 @@
     <body>  
         <nav class="upper-bar">
             <ul class="nav-links">
-                <li class="link">
-                    <a href="{% url 'winday:profile' user.username %}" class="user">{{ request.user }}</a>
-                </li>
+                {% if request.user.is_authenticated %}
+                    <li class="link">
+                        <a href="{% url 'winday:profile' request.user.username %}" class="user">{{ request.user }}</a>
+                    </li>
+                {% endif %}
                 <li class="link">
                     <a href="{% url 'winday:index' %}">Winday</a>
                 </li>

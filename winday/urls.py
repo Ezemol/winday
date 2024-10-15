@@ -13,5 +13,6 @@ urlpatterns = [
     path("profile/<str:username>/", views.profile, name="profile"),
     path("profile_connections/<int:profile_id>/", views.profile_connections, name="profile_connections"),
     path("follow/<int:profile_id>/", views.follow_user, name="follow_user"),
+    path("find_wind/<str:location>/", views.find_wind, name="find_wind"),
 
 ]
