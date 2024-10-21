@@ -3,6 +3,8 @@
     --blanco: #fff;
     --azul-claro: #1d4ed8;
     --gris: #A9A9A9; 
+    --semi-transparente: rgba(24, 24, 27, 0.8);
+    --box-shadow: rgba(0, 0, 0, 0.2);
 }
 
 *{
@@ -51,7 +53,7 @@ body {
     align-items: center;
     gap: 3rem;
     padding: 1rem 0.75rem; /* Aumenta el padding para darle más espacio */
-    background-color: rgba(24, 24, 27, 0.8); /* Color con opacidad */
+    background-color: var(--semi-transparente); /* Color con opacidad */
     min-height: 80px; /* Establece una altura mínima */
 }
 
@@ -148,7 +150,7 @@ body {
 }
 
 .login-container {
-    background-color: rgba(24, 24, 27, 0.8); /* Fondo semiopaco, manteniendo el diseño */
+    background-color: var(--semi-transparente); /* Fondo semiopaco, manteniendo el diseño */
     padding: 2rem; /* Espaciado para el formulario */
     max-width: 500px; /* Ancho máximo del formulario */
     margin: 2rem auto; /* Centrar horizontalmente */
@@ -158,9 +160,15 @@ body {
 
 .principal-title {
     font-size: 2rem;
-    color: var(--blanco);
-    text-align: center;
+    color: var(--blanco); /* Mantenemos el color blanco para el texto */
+    text-align: center; /* Centrar el título */
     margin-bottom: 1.5rem;
+    background-color: var(--azul-oscuro);
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 15px;
+    box-shadow: 0 4px 8px var(--box-shadow); /* Sombra para darle un efecto elevado */
+    max-width: 800px; /* Ancho máximo */
+    margin: 0 auto 1.5rem auto; /* Centrar horizontalmente */
 }
 
 .form-group {
@@ -222,7 +230,7 @@ body {
 }
 
 .copyright {
-    background-color: rgba(24, 24, 27, 0.9);
+    background-color: var(--semi-transparente);
     color: var(--blanco);
     text-align: center;
     padding: 1rem;
@@ -275,3 +283,70 @@ body {
     padding-top: 2rem;
 }
 
+/* Estilos generales para centrar el contenido */
+.wind-info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh; /* Centrado vertical */
+    text-align: center;
+    padding: 2rem;
+    border-radius: 10px;
+    color: var(--blanco); /* Texto en blanco */
+}
+
+.wind-data-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--azul-oscuro);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px var(--box-shadow);
+    max-width: 400px;
+    width: 100%;
+}
+
+/* Estilo para el icono de viento */
+.wind-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--azul-claro); /* Color del icono de viento */
+}
+
+/* Detalles del viento */
+.wind-details {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.wind-speed, .wind-direction {
+    margin: 0.5rem 0;
+}
+
+/* Mensajes condicionales de windsurf */
+.windsurf-status {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+}
+
+.windsurf-status.positive {
+    color: var(--blanco);
+    background-color: var(--azul-claro);
+    padding: 0.5rem;
+    border-radius: 5px;
+}
+
+.windsurf-status.negative {
+    color: var(--blanco);
+    background-color: var(--gris);
+    padding: 0.5rem;
+    border-radius: 5px;
+}
+
+/* Estilos para los mensajes de error */
+.error-message {
+    color: var(--gris);
+    font-size: 1.2rem;
+}

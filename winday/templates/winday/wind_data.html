@@ -1,22 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Datos del Viento</title>
-</head>
-<body>
-    <h1>Condiciones del viento en {{ location }}</h1>
+{% extends 'winday/layout.html' %}
+{% load static %}
 
-    {% if wind_speed %}
-        <ul>
-            <li>Velocidad del viento: {{ wind_speed }} m/s</li>
-            <li>Dirección del viento: {{ wind_direction }}°</li>
-        </ul>
-    {% elif error %}
-        <p>{{ error }}</p>
-    {% else %}
-        <p>No hay datos disponibles en este momento.</p>
-    {% endif %}
-</body>
-</html>
+    {% block title %}Datos del viento{% endblock %}
+
+    {% block body %}
+    <div class="wind-info-container">
+        <h1 class="principal-title">Condiciones del viento en {{ location }}</h1>
+
+        {% if wind_speed %}
+            <div class="wind-data-block">
+                <div class="wind-icon">
+                    <i class="fas fa-wind"></i> <!-- Ícono de viento -->
+                </div>
+                <div class="wind-details">
+                    <p class="wind-speed">Velocidad del viento: <strong>{{ wind_speed }} m/s</strong></p>
+                    <p class="wind-direction">Dirección del viento: <strong>{{ wind_direction }}°</strong></p>
+
+                    {% if wind_speed >= 5 %}
+                        <p class="windsurf-status positive">¡Es un buen momento para hacer windsurf! 🌊</p>
+                    {% else %}
+                        <p class="windsurf-status negative">No es un buen momento para windsurf. 🌬️</p>
+                    {% endif %}
+                </div>
+            </div>
+        {% elif error %}
+            <p class="error-message">{{ error }}</p>
+        {% else %}
+            <p class="error-message">No hay datos disponibles en este momento.</p>
+        {% endif %}
+    </div>
+{% endblock %}
+

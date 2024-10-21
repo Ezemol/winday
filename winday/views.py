@@ -135,10 +135,10 @@ def profile_connections(request, profile_id):
 
     if view_type == 'following': 
         profiles = user.following.all()
-        title = 'Following'
+        title = 'Seguidos'
     else:
         profiles = user.profile.followers.all()
-        title = 'Followers'
+        title = 'Seguidores'
 
     return render(request, 'winday/profile_connections.html', {
         "username": user,
@@ -176,6 +176,9 @@ def follow_user(request, profile_id):
     return JsonResponse({"error": "Post request requerida."}, status=400) # Manejar método incorrecto
 
 def find_wind(request, location):
+    # TODO
+    location = request.GET.get["location"]
+
     cache_key = f'wind_data_{location}'
     cached_data = cache.get(cache_key)
     
