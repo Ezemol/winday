@@ -25,7 +25,7 @@
                     </div>
                 </div>
 
-                <div id="favorite-div" data-user-id="{{ request.user.id }}"></div>
+                <div id="favorite-div" data-user-id="{{ request.user.id }}" data-location-fav="{{is_fav}}"></div>
 
             {% elif error %}
                 <p class="error-message">{{ error }}</p>
@@ -33,12 +33,12 @@
                 <p class="error-message">No hay datos disponibles en este momento.</p>
             {% endif %}
         {% else %}
-        <h1 class="principal-title">Sin resultados</h1>
-            <p class="error-message">Por favor, ingrese una localización válida.</p>
+            <h1 class="principal-title">Sin resultados</h1>
+                <p class="error-message">Por favor, ingrese una localización válida.</p>
         {% endif %}
     </div>
 {% endblock %}
 
 {% block script %}
-<script src="{% static 'winday/wind.js' %}"></script>
+    <script src="{% static 'winday/wind.js' %}"></script>
 {% endblock %}

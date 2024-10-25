@@ -1,27 +1,50 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    favoriteDiv = document.querySelector('#favorite-div');
-    location = document.querySelector('#location');
-    userId = favoriteDiv.getAttribute('data-user-id');
+    const favoriteDiv = document.querySelector('#favorite-div');
+    const location = document.querySelector('#location');
+    const userId = favoriteDiv.getAttribute('data-user-id');
+    let isFav = favoriteDiv.getAttribute('data-location-fav') === 'true';
 
-    FavoriteDiv.innerHTML = `
-        <button id="favorite-button-${location}">Add to favorite</button>
-    `
+    if (favoriteDiv) {
+        favoriteDiv.innerHTML = `
+            <button id="favorite-button">
+                ${isFav ? "Eliminar de favoritos" : "Agregar a favoritos"}
+            </button>
+        `;
 
-    document.querySelector(`#favorite-button-${location}`).addEventListener('click', () => {
-        changeFavorite(userId, location);
-    });
+        document.querySelector(`#favorite-button`).addEventListener('click', () => {
+            const action = isFav ? "Eliminar de favoritos" : "Agregar a favoritos";
+            console.log(action);
 
+            changeFavorite(userId, location);
+        });
+    }
 
     function changeFavorite(userId, location) {
         fetch(`/favorite/${location}`, {
             method: 'POST',
             headers: {
-                'Content-type': 'aplication/json',
+                'Content-Type': 'application/json',
                 'X-CSRFToken': getCookie('csrftoken')
-            }
-            // TODO
+            },
+            body: JSON.stringify({
+                location:location
+            }) 
         })
+        .then(response => response.json())
+        .then(result => {
+            console.log(result);
+
+            if (result.is_fav !== undefined) {
+                isFav = result.is_fav;
+                document.querySelector(`#favorite-button`).innerHTML = 
+                `${isFav ? "Eliminar de favoritos" : "Agregar a favoritos"}`;
+            }
+        })
+        .catch(error => {
+            console.error('Error', error);
+            alert('Hubo un error inentando agregar/quitar lugar de tus favoritos.');
+        });
     }
 
     // Funcion para obtener csrf token

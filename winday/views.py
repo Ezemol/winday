@@ -13,7 +13,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import ValidationError
 from django.core.cache import cache
 
-from .models import User, Profile
+from .models import User, Profile, Place, Favorite
 
 """ Main page """
 def index(request):
@@ -175,6 +175,7 @@ def follow_user(request, profile_id):
             return JsonResponse({"error":  "El usuario no está autenticado."}, status=403)  # Manejar usuario no autenticado
     return JsonResponse({"error": "Post request requerida."}, status=400) # Manejar método incorrecto
 
+# Vista para manejar la consulta del viento y verificar favoritos
 def find_wind(request):
     location = request.GET.get('location')  # Obtener la ubicación desde el formulario
     
@@ -196,19 +197,69 @@ def find_wind(request):
                 if response.status_code == 200:
                     wind_speed = data['wind']['speed']
                     wind_direction = data['wind']['deg']
-                    context = {'location': location, 'wind_speed': wind_speed, 'wind_direction': wind_direction}
+                    is_fav = is_favorite(request, location)  # Devuelve True o False
+                    
+                    context = {
+                        'location': location, 
+                        'wind_speed': wind_speed, 
+                        'wind_direction': wind_direction,
+                        'is_fav': is_fav,  # Me dice si está o no en favoritos
+                    }
                     # Almacenar en caché por 10 minutos
                     cache.set(cache_key, context, timeout=600)
                 else:
                     context = {'error': 'No se pudo obtener la información del viento.'}
-            except Exception:
-                context = {'error': 'Ocurrió un error al intentar obtener los datos.'}
+            except Exception as e:
+                context = {'error': f'Ocurrió un error: {e}'}
     else:
         context = {'error': 'Por favor, ingrese una ubicación válida.'}
 
     return render(request, 'winday/wind_data.html', context)
 
+
 # Vista para manejar los favoritos de cada usuario
 def favorite(request, location):
-    # TODO
-    pass
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            try:
+                user = request.user
+                place, created = Place.objects.get_or_create(name=location)
+                favorite, is_fav = Favorite.objects.get_or_create(user=user, place=place)
+                
+                is_fav = is_favorite(request, location) # Llama a la función que determina si es fav o no
+
+                if not is_fav:
+                    favorite.add_location(place)
+                    is_fav = True
+                    favorite.save()
+                    return JsonResponse({
+                        "success" : "Lugar agregado a favoritos.",
+                        "is_fav" : is_fav
+                    })
+                else:
+                    favorite.remove_location(place)
+                    is_fav = False
+                    favorite.save()
+                    return JsonResponse({
+                        "success" : "Lugar quitado de favoritos.",
+                        "is_fav" : is_fav
+                    })
+
+            except User.DoesNotExist:
+                return JsonResponse({"error":"Usuario no encontrado."}, status=404)  # Manejar usuario no encontrado
+        else:
+            return JsonResponse({"error":"El usuario no está autenticado."}, status=403)
+    else:
+        return JsonResponse({"error":"Solicitud post requerida."}, status=400)
+
+
+# Vista para decir si un usuario tiene o no un lugar en favoritos
+def is_favorite(request, location):
+    user = request.user
+    if user.is_authenticated:
+        # Intenta obtener el lugar; si no existe, se crea un objeto vacío
+        place = Place.objects.filter(name=location).first()
+        if place:
+            # Devuelve True si existe un favorito para el usuario y el lugar específico
+            return Favorite.objects.filter(user=user, place=place).exists()
+    return False  # Devuelve False si el usuario no está autenticado o el lugar no existe
