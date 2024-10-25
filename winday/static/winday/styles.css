@@ -105,23 +105,25 @@ body {
 .search-container {
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: center; /* Alinea verticalmente el input y el ícono */
+    justify-content: flex-start; /* Alinea todo a la izquierda inicialmente */
 }
 
 /* Campo de texto del buscador (inicialmente oculto) */
 .search-input {
     width: 0;
-    height: 30px;
+    height: 40px; /* Ajustamos la altura para que coincida con el ícono */
     padding: 0;
     font-size: 14px;
     border: none;
     background-color: var(--azul-oscuro);
     color: var(--blanco);
     outline: none;
-    transition: width 0.4s ease;
+    transition: width 0.6s ease, opacity 0.6s ease, padding 0.6s ease;
     border-bottom: 2px solid var(--azul-claro);
     opacity: 0;
-    pointer-events: none; /* Evita que se pueda escribir hasta que esté visible */
+    pointer-events: none;
+    margin-right: 10px; /* Espacio a la derecha del input */
 }
 
 /* Icono de la lupa */
@@ -130,22 +132,29 @@ body {
     font-size: 20px;
     color: var(--blanco);
     background-color: var(--azul-oscuro);
-    padding: 8px;
+    padding: 10px; /* Aseguramos que tenga la misma altura que el input */
     border-radius: 50%;
+    transition: transform 0.6s ease, background-color 0.6s ease;
+    display: flex;
+    align-items: center; /* Alineación interna del ícono */
+    justify-content: center;
 }
 
-/* Estilo al hacer hover en el contenedor o cuando el input tiene foco */
-.search-container:hover .search-input,
-.search-input:focus {
-    width: 150px; /* Expande el input */
+/* Estilo al hacer hover en el contenedor */
+.search-container:hover .search-input {
+    width: 150px;
     padding: 5px;
     opacity: 1;
-    pointer-events: auto; /* Permite escribir cuando esté visible */
+    pointer-events: auto;
 }
 
-/* Cambiar el estilo del icono al estar visible el input */
-.search-container:hover .search-icon,
-.search-input:focus + .search-icon {
+.search-form{
+    display: flex;
+    align-items: center;
+}
+
+/* Mueve el ícono junto con el input */
+.search-container:hover .search-icon {
     background-color: transparent;
 }
 
@@ -349,4 +358,8 @@ body {
 .error-message {
     color: var(--gris);
     font-size: 1.2rem;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: var(--semi-transparente);
+    box-shadow: var(--box-shadow);
 }

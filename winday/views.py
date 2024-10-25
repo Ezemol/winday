@@ -175,33 +175,40 @@ def follow_user(request, profile_id):
             return JsonResponse({"error":  "El usuario no está autenticado."}, status=403)  # Manejar usuario no autenticado
     return JsonResponse({"error": "Post request requerida."}, status=400) # Manejar método incorrecto
 
-def find_wind(request, location):
-    # TODO
-    location = request.GET.get["location"]
-
-    cache_key = f'wind_data_{location}'
-    cached_data = cache.get(cache_key)
+def find_wind(request):
+    location = request.GET.get('location')  # Obtener la ubicación desde el formulario
     
-    if cached_data:
-        context = cached_data
+    if location:
+        cache_key = f'wind_data_{location}'
+        cached_data = cache.get(cache_key)
+    
+        if cached_data:
+            context = cached_data
+        else:
+            # Lógica para hacer la solicitud a la API
+            api_key = 'fbe62aefbaa8f42f0dd5f00177975542'
+            base_url = "http://api.openweathermap.org/data/2.5/weather"
+            params = {'q': location, 'appid': api_key, 'units': 'metric'}
+            
+            try:
+                response = requests.get(base_url, params=params)
+                data = response.json()
+                if response.status_code == 200:
+                    wind_speed = data['wind']['speed']
+                    wind_direction = data['wind']['deg']
+                    context = {'location': location, 'wind_speed': wind_speed, 'wind_direction': wind_direction}
+                    # Almacenar en caché por 10 minutos
+                    cache.set(cache_key, context, timeout=600)
+                else:
+                    context = {'error': 'No se pudo obtener la información del viento.'}
+            except Exception:
+                context = {'error': 'Ocurrió un error al intentar obtener los datos.'}
     else:
-        # Lógica para hacer la solicitud a la API
-        api_key = 'fbe62aefbaa8f42f0dd5f00177975542'
-        base_url = "http://api.openweathermap.org/data/2.5/weather"
-        params = {'q': location, 'appid': api_key, 'units': 'metric'}
-        
-        try:
-            response = requests.get(base_url, params=params)
-            data = response.json()
-            if response.status_code == 200:
-                wind_speed = data['wind']['speed']
-                wind_direction = data['wind']['deg']
-                context = {'location': location, 'wind_speed': wind_speed, 'wind_direction': wind_direction}
-                # Almacenar en caché por 10 minutos
-                cache.set(cache_key, context, timeout=600)
-            else:
-                context = {'error': 'No se pudo obtener la información del viento.'}
-        except Exception:
-            context = {'error': 'Ocurrió un error al intentar obtener los datos.'}
+        context = {'error': 'Por favor, ingrese una ubicación válida.'}
 
     return render(request, 'winday/wind_data.html', context)
+
+# Vista para manejar los favoritos de cada usuario
+def favorite(request, location):
+    # TODO
+    pass

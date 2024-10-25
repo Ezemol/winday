@@ -24,13 +24,13 @@
                 </li>
                 <li>
                     <div class="search-container">
-                        <form action="{% url 'winday:find_wind' %}" method="get">
-                            <input type="text" name="location" class="search-input" placeholder="Buscar...">
-                            <div class="search-icon">
+                        <form action="{% url 'winday:find_wind' %}" method="get" class="search-form">
+                            <input type="text" class="search-input" name="location" placeholder="Buscar..." required>
+                            <button type="submit" class="search-icon">
                                 <i class="fas fa-search"></i>
-                            </div>
+                            </button>
                         </form>
-                    </div>                    
+                    </div>           
                 </li>
                 <li class="log-div link"> <!-- Cambié aquí a log-div -->
                     {% if request.user.is_authenticated %}

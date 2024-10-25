@@ -34,3 +34,20 @@ class Profile(models.Model):
             "followers_count": self.followers.count(),
             "following_count": self.user.following.count(),
         }
+    
+class Place(models.Model):
+    name = models.CharField(max_length=255)
+    url = models.URLField(null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+class Favorite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('user', 'place')
+        
+        def __str__(self):
+            return f"{self.user.username} - {self.place.name}"

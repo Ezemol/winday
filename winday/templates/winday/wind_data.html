@@ -5,29 +5,40 @@
 
     {% block body %}
     <div class="wind-info-container">
-        <h1 class="principal-title">Condiciones del viento en {{ location }}</h1>
+        {% if location %}    
+            <h1 class="principal-title">Condiciones del viento en <span id="location">{{ location }}</span></h1>
 
-        {% if wind_speed %}
-            <div class="wind-data-block">
-                <div class="wind-icon">
-                    <i class="fas fa-wind"></i> <!-- Ícono de viento -->
-                </div>
-                <div class="wind-details">
-                    <p class="wind-speed">Velocidad del viento: <strong>{{ wind_speed }} m/s</strong></p>
-                    <p class="wind-direction">Dirección del viento: <strong>{{ wind_direction }}°</strong></p>
+            {% if wind_speed %}
+                <div class="wind-data-block">
+                    <div class="wind-icon">
+                        <i class="fas fa-wind"></i> <!-- Ícono de viento -->
+                    </div>
+                    <div class="wind-details">
+                        <p class="wind-speed">Velocidad del viento: <strong>{{ wind_speed }} m/s</strong></p>
+                        <p class="wind-direction">Dirección del viento: <strong>{{ wind_direction }}°</strong></p>
 
-                    {% if wind_speed >= 5 %}
-                        <p class="windsurf-status positive">¡Es un buen momento para hacer windsurf! 🌊</p>
-                    {% else %}
-                        <p class="windsurf-status negative">No es un buen momento para windsurf. 🌬️</p>
-                    {% endif %}
+                        {% if wind_speed >= 5 %}
+                            <p class="windsurf-status positive">¡Es un buen momento para hacer windsurf! 🌊</p>
+                        {% else %}
+                            <p class="windsurf-status negative">No es un buen momento para windsurf. 🌬️</p>
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
-        {% elif error %}
-            <p class="error-message">{{ error }}</p>
+
+                <div id="favorite-div" data-user-id="{{ request.user.id }}"></div>
+
+            {% elif error %}
+                <p class="error-message">{{ error }}</p>
+            {% else %}
+                <p class="error-message">No hay datos disponibles en este momento.</p>
+            {% endif %}
         {% else %}
-            <p class="error-message">No hay datos disponibles en este momento.</p>
+        <h1 class="principal-title">Sin resultados</h1>
+            <p class="error-message">Por favor, ingrese una localización válida.</p>
         {% endif %}
     </div>
 {% endblock %}
 
+{% block script %}
+<script src="{% static 'winday/wind.js' %}"></script>
+{% endblock %}
