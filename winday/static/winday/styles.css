@@ -287,6 +287,18 @@ body {
     border: 2px solid var(--azul-claro);
 }
 
+#favorite-div{
+    position: relative;
+}
+
+.fav-button {
+    background-color: var(--gris);
+    color: var(--azul-oscuro);
+}
+
+.fav-button:hover {
+    border: 2px solid var(--gris);
+}
 .follow-div{
     text-align: center;
     padding-top: 2rem;
@@ -315,6 +327,7 @@ body {
     box-shadow: 0 4px 8px var(--box-shadow);
     max-width: 400px;
     width: 100%;
+    position: relative;
 }
 
 /* Estilo para el icono de viento */

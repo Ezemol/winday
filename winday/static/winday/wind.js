@@ -7,13 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (favoriteDiv) {
         favoriteDiv.innerHTML = `
-            <button id="favorite-button">
+            <button id="favorite-button" class="fav-button follow-button">
                 ${isFav ? "Eliminar de favoritos" : "Agregar a favoritos"}
             </button>
         `;
 
         document.querySelector(`#favorite-button`).addEventListener('click', () => {
-            const action = isFav ? "Eliminar de favoritos" : "Agregar a favoritos";
+            let action = isFav ? "Eliminar de favoritos" : "Agregar a favoritos";
             console.log(action);
 
             changeFavorite(userId, location);

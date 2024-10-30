@@ -185,6 +185,7 @@ def find_wind(request):
     
         if cached_data:
             context = cached_data
+            context['is_fav'] = is_favorite(request, location)
         else:
             # Lógica para hacer la solicitud a la API
             api_key = 'fbe62aefbaa8f42f0dd5f00177975542'
@@ -216,44 +217,40 @@ def find_wind(request):
 
     return render(request, 'winday/wind_data.html', context)
 
-
-# Vista para manejar los favoritos de cada usuario
+@login_required
 def favorite(request, location):
     if request.method == 'POST':
         if request.user.is_authenticated:
             try:
                 user = request.user
                 place, created = Place.objects.get_or_create(name=location)
-                favorite, is_fav = Favorite.objects.get_or_create(user=user, place=place)
-                
-                is_fav = is_favorite(request, location) # Llama a la función que determina si es fav o no
+                favorite = Favorite.objects.filter(user=user, place=place)
 
-                if not is_fav:
-                    favorite.add_location(place)
+                if not favorite.exists():
+                    # Agregar lugar a favoritos
+                    Favorite.objects.create(user=user, place=place)
                     is_fav = True
-                    favorite.save()
-                    return JsonResponse({
-                        "success" : "Lugar agregado a favoritos.",
-                        "is_fav" : is_fav
-                    })
+                    message = "Lugar agregado a favoritos."
                 else:
-                    favorite.remove_location(place)
+                    # Quitar lugar de favoritos
+                    favorite.delete()
                     is_fav = False
-                    favorite.save()
-                    return JsonResponse({
-                        "success" : "Lugar quitado de favoritos.",
-                        "is_fav" : is_fav
-                    })
+                    message = "Lugar quitado de favoritos."
 
+                return JsonResponse({
+                    "success": message,
+                    "is_fav": is_fav
+                })
             except User.DoesNotExist:
-                return JsonResponse({"error":"Usuario no encontrado."}, status=404)  # Manejar usuario no encontrado
+                return JsonResponse({"error": "Usuario no encontrado."}, status=404)
         else:
-            return JsonResponse({"error":"El usuario no está autenticado."}, status=403)
+            return JsonResponse({"error": "El usuario no está autenticado."}, status=403)
     else:
-        return JsonResponse({"error":"Solicitud post requerida."}, status=400)
+        return JsonResponse({"error": "Solicitud POST requerida."}, status=400)
 
 
 # Vista para decir si un usuario tiene o no un lugar en favoritos
+@login_required
 def is_favorite(request, location):
     user = request.user
     if user.is_authenticated:
@@ -262,4 +259,5 @@ def is_favorite(request, location):
         if place:
             # Devuelve True si existe un favorito para el usuario y el lugar específico
             return Favorite.objects.filter(user=user, place=place).exists()
+        return False
     return False  # Devuelve False si el usuario no está autenticado o el lugar no existe

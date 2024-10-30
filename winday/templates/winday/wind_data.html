@@ -23,9 +23,8 @@
                             <p class="windsurf-status negative">No es un buen momento para windsurf. 🌬️</p>
                         {% endif %}
                     </div>
+                    <div id="favorite-div" data-user-id="{{ request.user.id }}" data-location-fav="{{is_fav}}"></div>
                 </div>
-
-                <div id="favorite-div" data-user-id="{{ request.user.id }}" data-location-fav="{{is_fav}}"></div>
 
             {% elif error %}
                 <p class="error-message">{{ error }}</p>
